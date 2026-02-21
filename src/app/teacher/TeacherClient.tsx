@@ -343,7 +343,7 @@ function Page() {
                 Teacher Review
               </p>
               <button
-                onClick={() => router.push("/")}
+                onClick={() => router.push("/eval")}
                 className="text-[11px] font-mono text-slate-500 hover:text-slate-300 transition-colors flex items-center gap-1.5"
               >
                 ← Back
