@@ -158,7 +158,7 @@ function QuestionCard({
 
       {/* Question Rubric */}
       <p
-        className="text-lg text-slate-100 leading-relaxed mb-5 whitespace-pre-line"
+        className="text-sm text-slate-100 leading-relaxed mb-5 whitespace-pre-line"
         style={{ fontFamily: "'DM Serif Display', Georgia, serif" }}
       >
         {question.Rubric?.replace(/\\n/g, "\n")}
