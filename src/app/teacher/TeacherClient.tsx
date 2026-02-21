@@ -11,6 +11,7 @@ type Question = {
   Instruction?: string;
   Question: string;
   Rubric: string;
+  Type: string;
   Answer?: string; // optional — if present, enables auto-grading
 };
 
@@ -137,9 +138,14 @@ function QuestionCard({
         )}
       </div>
 
+      {/* Bloom's Type */}
+      {question.Type && (
+        <p className="text-lg text-slate-200 italic mb-2 whitespace-pre-line font-bold text-right">{question.Type}</p>
+      )}
+
       {/* Instruction */}
       {question.Instruction && (
-        <p className="text-lg text-slate-200 italic mb-2">{question.Instruction}</p>
+        <p className="text-lg text-slate-200 italic mb-2 whitespace-pre-line">{question.Instruction?.replace(/\\n/g, "\n")}</p>
       )}
 
       {/* Question text */}
