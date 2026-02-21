@@ -1,10 +1,12 @@
+import dynamic from "next/dynamic";
 import React, { Suspense } from "react"
-import TeacherClient from "./TeacherClient"
+
+const TeacherPage = dynamic(() => import("./TeacherClient"), { ssr: false });
 
 function page() {
   return (
     <Suspense>
-      <TeacherClient />
+      <TeacherPage />
     </Suspense>
   )
 }
