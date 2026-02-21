@@ -10,6 +10,7 @@ type Question = {
   _id: Id<"questions">;
   Instruction?: string;
   Question: string;
+  Rubric: string;
   Answer?: string; // optional — if present, enables auto-grading
 };
 
@@ -149,33 +150,26 @@ function QuestionCard({
         {question.Question}
       </p>
 
-      {/* Two-column: student answer + model answer */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
-        {/* Student answer — read-only */}
-        <div>
-          <label className="block text-[10px] font-mono tracking-widest text-slate-500 uppercase mb-1.5">
-            Student&apos;s Answer
-          </label>
-          <div className="w-full min-h-[80px] bg-slate-800/60 border border-slate-700/60 rounded-xl px-4 py-3 text-sm text-slate-300 leading-relaxed">
-            {studentAnswer ? (
-              studentAnswer.Answer
-            ) : (
-              <span className="text-slate-600 italic">No answer submitted</span>
-            )}
-          </div>
-        </div>
+      {/* Question Rubric */}
+      <p
+        className="text-lg text-slate-100 leading-relaxed mb-5 whitespace-pre-line"
+        style={{ fontFamily: "'DM Serif Display', Georgia, serif" }}
+      >
+        {question.Rubric?.replace(/\\n/g, "\n")}
+      </p>
 
-        {/* Model answer — read-only, shown if exists */}
-        {question.Answer && (
-          <div>
-            <label className="block text-[10px] font-mono tracking-widest text-emerald-600 uppercase mb-1.5">
-              Model Answer
-            </label>
-            <div className="w-full min-h-[80px] bg-emerald-500/5 border border-emerald-500/20 rounded-xl px-4 py-3 text-sm text-emerald-300/80 leading-relaxed">
-              {question.Answer}
-            </div>
-          </div>
-        )}
+      {/* Student answer — read-only */}
+      <div className="mb-5">
+        <label className="block text-[10px] font-mono tracking-widest text-slate-500 uppercase mb-1.5">
+          Student&apos;s Answer
+        </label>
+        <div className="w-full min-h-[80px] bg-slate-800/60 border border-slate-700/60 rounded-xl px-4 py-3 text-lg text-slate-300 leading-relaxed">
+          {studentAnswer ? (
+            studentAnswer.Answer
+          ) : (
+            <span className="text-slate-600 italic">No answer submitted</span>
+          )}
+        </div>
       </div>
 
       {/* Divider */}
