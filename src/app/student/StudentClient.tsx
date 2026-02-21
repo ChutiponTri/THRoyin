@@ -127,10 +127,10 @@ function QuestionCard({
 
       {/* Question text */}
       <p
-        className="text-lg text-slate-100 leading-relaxed mb-5"
+        className="text-lg text-slate-100 leading-relaxed mb-5 whitespace-pre-line"
         style={{ fontFamily: "'DM Serif Display', Georgia, serif" }}
       >
-        {question.Question}
+        {question.Question?.replace(/\\n/g, "\n")}
       </p>
 
       {/* Textarea */}
