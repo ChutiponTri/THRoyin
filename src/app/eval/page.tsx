@@ -198,7 +198,7 @@ export default function HomePage() {
                 active:scale-[0.98]"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
-              Start Quiz →
+              Start Evaluate →
             </button>
           </div>
 
