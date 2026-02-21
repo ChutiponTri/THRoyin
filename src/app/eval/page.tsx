@@ -18,7 +18,7 @@ export default function HomePage() {
   const [selectedName, setSelectedName] = useState("");
   const [teacherName, setTeacherName] = useState<string>("");
 
-  const teachers = ["Poi", "Nae"];
+  const teachers = ["Poi", "Nae", "AI"];
 
   const activeName = selectedName;
   const activeTeacher = teacherName;
