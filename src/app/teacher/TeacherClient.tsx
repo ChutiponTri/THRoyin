@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { api } from "../../../convex/_generated/api";
 import { Id } from "../../../convex/_generated/dataModel";
+import * as XLSX from "xlsx";
 
 type Question = {
   _id: Id<"questions">;
@@ -317,6 +318,54 @@ function Page() {
     setKey((k) => k + 1);
   }
 
+  function handleExportExcel() {
+    if (!questions || !answers) return;
+
+    const rows = questions.map((question, idx) => {
+      const studentAnswer = getAnswerForQuestion(question);
+      const matchedAnswer = teacherRecord?.find(
+        (a) =>
+          a.Question === question.Question &&
+          a.Instruction === question.Instruction &&
+          a.Answer === studentAnswer?.Answer
+      );
+
+      return {
+        "No.": idx + 1,
+        "Type": question.Type ?? "",
+        "Instruction": question.Instruction ?? "",
+        "Question": question.Question ?? "",
+        "Rubric": question.Rubric ?? "",
+        "Student Answer": studentAnswer?.Answer ?? "No answer submitted",
+        "Score": matchedAnswer?.Score ?? "",
+        "Comments": matchedAnswer?.Comments ?? "",
+        "Student": studentName,
+        "Teacher": teacherName,
+      };
+    });
+
+    const worksheet = XLSX.utils.json_to_sheet(rows);
+
+    // Set column widths
+    worksheet["!cols"] = [
+      { wch: 5 },   // No.
+      { wch: 15 },  // Type
+      { wch: 30 },  // Instruction
+      { wch: 40 },  // Question
+      { wch: 40 },  // Rubric
+      { wch: 40 },  // Student Answer
+      { wch: 8 },   // Score
+      { wch: 40 },  // Comments
+      { wch: 15 },  // Student
+      { wch: 15 },  // Teacher
+    ];
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Grades");
+
+    XLSX.writeFile(workbook, `grades_${studentName}_${teacherName}.xlsx`);
+  }
+
   console.log(teacherRecord)
 
   return (
@@ -437,13 +486,24 @@ function Page() {
 
           {/* ── Finish button ── */}
           {!showSummary && questions && questions.length > 0 && (
-            <div className="flex justify-center mt-4">
+            <div className="flex justify-center gap-3 mt-4">
               <button
                 onClick={() => setShowSummary(true)}
                 className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-lime-400 text-slate-950 font-semibold transition-all
                   hover:bg-lime-300 hover:shadow-[0_0_24px_rgba(163,230,53,0.35)] hover:-translate-y-px"
               >
                 Finish Grading →
+              </button>
+
+              <button
+                onClick={handleExportExcel}
+                className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-slate-800 border border-slate-700 text-slate-200 font-semibold transition-all
+                  hover:bg-slate-700 hover:border-slate-500 hover:-translate-y-px"
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M8 1v9m0 0L5 7m3 3 3-3M2 12v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                Export Excel
               </button>
             </div>
           )}
@@ -452,5 +512,6 @@ function Page() {
     </>
   );
 }
+
 
 export default Page;
